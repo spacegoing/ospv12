@@ -1,6 +1,6 @@
 CUDA_VISIBLE_DEVICES=0 python opensora/sample/sample_t2v.py \
-    --model_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/.cache/huggingface/download/93x480p" \
-    --num_frames 29 \
+    --model_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p" \
+    --num_frames 93 \
     --height 480 \
     --width 640 \
     --cache_dir "../cache_dir" \
