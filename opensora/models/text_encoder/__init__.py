@@ -39,7 +39,7 @@ class CLIPWrapper(nn.Module):
 
 text_encoder = {
     'google/mt5-xl': T5Wrapper,
-    'google/mt5-xxl': T5Wrapper,
+    'mt5-xxl': T5Wrapper,
     'google/umt5-xl': T5Wrapper,
     'google/umt5-xxl': T5Wrapper,
     'DeepFloyd/t5-v1_1-xxl': T5Wrapper,

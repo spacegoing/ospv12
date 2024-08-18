@@ -4,8 +4,8 @@ export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 export PDSH_RCMD_TYPE=ssh
 # NCCL setting
-export GLOO_SOCKET_IFNAME=bond0
-export NCCL_SOCKET_IFNAME=bond0
+# export GLOO_SOCKET_IFNAME=bond0
+export NCCL_SOCKET_IFNAME=eth0
 export NCCL_IB_HCA=mlx5_10:1,mlx5_11:1,mlx5_12:1,mlx5_13:1
 export NCCL_IB_GID_INDEX=3
 export NCCL_IB_TC=162
@@ -21,7 +21,7 @@ accelerate launch \
     --config_file scripts/accelerate_configs/deepspeed_zero2_config.yaml \
     opensora/train/train_t2v_diffusers.py \
     --model OpenSoraT2V-ROPE-L/122 \
-    --text_encoder_name "/workspace/host_folder/Open-Sora-Plan/google-mt5-xxl" \
+    --text_encoder_name "/workspace/public/users/lichang93/mydocker/cogvx/host_folder/Open-Sora-Plan/google-mt5-xxl" \
     --cache_dir "./cache_dir" \
     --dataset t2v \
     --data "m5.txt" \
