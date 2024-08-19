@@ -63,4 +63,4 @@ accelerate launch \
     --group_frame \
     --sp_size 8 \
     --train_sp_batch_size 2 \
-    --output_dir="/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p"
+    --output_dir="/workspace/public/models/Open-Sora-Plan-v1.2.0/test"
