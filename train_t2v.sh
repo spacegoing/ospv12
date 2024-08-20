@@ -1,0 +1,1 @@
+/workspace/Open-Sora-Plan/myscripts/train_t2v_480.sh

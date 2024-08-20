@@ -1,0 +1,1 @@
+/workspace/Open-Sora-Plan/myscripts/sample_t2v_sp.sh

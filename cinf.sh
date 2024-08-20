@@ -1,0 +1,1 @@
+/workspace/Open-Sora-Plan/myscripts/inf_ckpt_t2v_sp_480.sh
