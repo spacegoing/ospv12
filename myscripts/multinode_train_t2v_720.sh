@@ -7,33 +7,34 @@ export XDG_CACHE_HOME="/workspace/public/users/lichang93/.cache"
 export HF_HOME="/workspace/public/users/lichang93/.cache/huggingface"
 # NCCL setting
 # export GLOO_SOCKET_IFNAME=bond0
-export NCCL_SOCKET_IFNAME=eth0
-export NCCL_IB_HCA=mlx5_10:1,mlx5_11:1,mlx5_12:1,mlx5_13:1
-export NCCL_IB_GID_INDEX=3
+# export NCCL_SOCKET_IFNAME=eth0
+# export NCCL_IB_HCA=mlx5_10:1,mlx5_11:1,mlx5_12:1,mlx5_13:1
+# export NCCL_IB_GID_INDEX=3
+# export NCCL_IB_TIMEOUT=22
+# export NCCL_IB_QPS_PER_CONNECTION=4
 export NCCL_IB_TC=162
-export NCCL_IB_TIMEOUT=22
 export NCCL_PXN_DISABLE=0
-export NCCL_IB_QPS_PER_CONNECTION=4
 export NCCL_ALGO=Ring
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 # export NCCL_ALGO=Tree
 
-accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_PORT --num_machines $WORLD_SIZE --machine_rank $RANK \
+accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_PORT \
+    --num_machines $WORLD_SIZE --machine_rank $RANK \
     --config_file /workspace/Open-Sora-Plan/myscripts/multi_node.yaml \
     opensora/train/train_t2v_diffusers.py \
     --sp_size 8 \
     --train_sp_batch_size 2 \
-    --output_dir="/workspace/Open-Sora-Plan/runs/480p_warm100_1e4/" \
+    --output_dir="/workspace/Open-Sora-Plan/runs/720_warmup1e5/" \
     --data "m5.txt" \
     --dataset t2v \
     --cache_dir "./cache_dir" \
-    --pretrained "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p/diffusion_pytorch_model.safetensors" \
+    --pretrained "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x720p/diffusion_pytorch_model.safetensors" \
     --model OpenSoraT2V-ROPE-L/122 \
     --sample_rate 1 \
     --num_frames 93 \
-    --max_height 480 \
-    --max_width 640 \
+    --max_height 720 \
+    --max_width 1280 \
     --interpolation_scale_t 1.0 \
     --interpolation_scale_h 1.0 \
     --interpolation_scale_w 1.0 \
@@ -43,7 +44,7 @@ accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_POR
     --dataloader_num_workers 10 \
     --gradient_accumulation_steps=1 \
     --max_train_steps=1000000 \
-    --learning_rate=1e-4 \
+    --learning_rate=1e-5 \
     --lr_scheduler="constant" \
     --lr_warmup_steps=100 \
     --mixed_precision="bf16" \

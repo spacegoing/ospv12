@@ -1,1 +1,1 @@
-/workspace/Open-Sora-Plan/myscripts/train_t2v_720.sh
+/workspace/Open-Sora-Plan/myscripts/multinode_train_t2v_720.sh
