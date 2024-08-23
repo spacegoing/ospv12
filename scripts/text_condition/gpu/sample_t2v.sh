@@ -3,8 +3,8 @@ CUDA_VISIBLE_DEVICES=0 python opensora/sample/sample_t2v.py \
     --num_frames 29 \
     --height 480 \
     --width 640 \
-    --cache_dir "../cache_dir" \
-    --text_encoder_name "/workspace/host_folder/Open-Sora-Plan/google-mt5-xxl" \
+    --cache_dir "./cache_dir" \
+    --text_encoder_name google/mt5-xxl \
     --text_prompt examples/prompt_list_0.txt \
     --ae CausalVAEModel_D4_4x8x8 \
     --ae_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/vae" \
