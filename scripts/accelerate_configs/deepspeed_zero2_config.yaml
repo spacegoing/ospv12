@@ -11,4 +11,3 @@ num_machines: 1
 num_processes: 8
 # gpu_ids: 0
 use_cpu: false
-ssh_port: 45677

@@ -12,11 +12,11 @@ export HF_HOME="/workspace/public/users/lichang93/.cache/huggingface"
 # export NCCL_IB_GID_INDEX=3
 # export NCCL_IB_TIMEOUT=22
 # export NCCL_IB_QPS_PER_CONNECTION=4
-export NCCL_IB_TC=162
-export NCCL_PXN_DISABLE=0
-export NCCL_ALGO=Ring
-export OMP_NUM_THREADS=1
-export MKL_NUM_THREADS=1
+# export NCCL_IB_TC=162
+# export NCCL_PXN_DISABLE=0
+# export NCCL_ALGO=Ring
+# export OMP_NUM_THREADS=1
+# export MKL_NUM_THREADS=1
 # export NCCL_ALGO=Tree
 
 accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_PORT \

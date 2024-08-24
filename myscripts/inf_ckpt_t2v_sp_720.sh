@@ -1,10 +1,10 @@
 torchrun --nnodes=1 --nproc_per_node 8  --master_port 29503 \
     -m opensora.sample.sample_t2v_sp \
-    --save_img_path "./eval/csp_480_warmup_1e5" \
+    --model_path "/workspace/Open-Sora-Plan/runs/720_warmup1e5/checkpoint-1750/model" \
+    --save_img_path "./eval/csp_720_warmup_1e5_1750" \
     --num_frames 93 \
-    --height 480 \
-    --width 640 \
-    --model_path "/workspace/Open-Sora-Plan/runs/480p_warm100/checkpoint-250/model" \
+    --height 720 \
+    --width 1280 \
     --cache_dir "../cache_dir" \
     --text_encoder_name "/workspace/host_folder/Open-Sora-Plan/google-mt5-xxl" \
     --text_prompt examples/test_mt5.txt \
@@ -15,8 +15,8 @@ torchrun --nnodes=1 --nproc_per_node 8  --master_port 29503 \
     --num_sampling_steps 100 \
     --enable_tiling \
     --max_sequence_length 512 \
-    --sample_method DDPM \
+    --sample_method EulerAncestralDiscrete \
     --model_type "dit"
-    # --sample_method EulerAncestralDiscrete \
+    # --sample_method DDPM \
     # --sample_method DPMSolverMultistep \
     # --tile_overlap_factor 0.125 \
