@@ -1,0 +1,1 @@
+/workspace/Open-Sora-Plan/myscripts/multinode_train_t2v_480.sh
