@@ -64,6 +64,7 @@ from opensora.models.diffusion import Diffusion_models, Diffusion_models_class
 from opensora.utils.dataset_utils import Collate, LengthGroupedSampler
 from opensora.sample.pipeline_opensora import OpenSoraPipeline
 
+import torch.distributed as dist
 
 # Will error if the minimal version of diffusers is not installed. Remove at your own risks.
 check_min_version("0.24.0")

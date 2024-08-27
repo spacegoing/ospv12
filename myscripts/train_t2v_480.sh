@@ -24,7 +24,8 @@ accelerate launch \
     opensora/train/train_t2v_diffusers.py \
     --sp_size 8 \
     --train_sp_batch_size 2 \
-    --output_dir="/workspace/Open-Sora-Plan/runs/480p_warm100_1e4/" \
+    --drop_short_ratio 0 \
+    --output_dir="/workspace/Open-Sora-Plan/runs/480p_sub6_29_sp/" \
     --data "m5.txt" \
     --dataset t2v \
     --cache_dir "./cache_dir" \

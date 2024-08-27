@@ -101,7 +101,7 @@ class DataSetProg(metaclass=SingletonMeta):
 
 dataset_prog = DataSetProg()
 
-def find_closest_y(x, vae_stride_t=4, model_ds_t=4):
+def find_closest_y(x, vae_stride_t=4, model_ds_t=8):
     if x < 29:
         return -1  
     for y in range(x, 12, -1):
@@ -328,7 +328,7 @@ class T2V_dataset(Dataset):
                     frame_indices = frame_indices[begin_index: end_index]
                     # frame_indices = frame_indices[:self.num_frames]  # head crop
                 # to find a suitable end_frame_idx, to ensure we do not need pad video
-                end_frame_idx = find_closest_y(len(frame_indices), vae_stride_t=4, model_ds_t=4)
+                end_frame_idx = find_closest_y(len(frame_indices), vae_stride_t=4, model_ds_t=8)
                 if end_frame_idx == -1:  # too short that can not be encoded exactly by videovae
                     cnt_too_short += 1
                     continue
@@ -379,7 +379,7 @@ class T2V_dataset(Dataset):
             # frame_indices = frame_indices[:self.num_frames]  # head crop
 
         # to find a suitable end_frame_idx, to ensure we do not need pad video
-        end_frame_idx = find_closest_y(len(frame_indices), vae_stride_t=4, model_ds_t=4)
+        end_frame_idx = find_closest_y(len(frame_indices), vae_stride_t=4, model_ds_t=8)
         if end_frame_idx == -1:  # too short that can not be encoded exactly by videovae
             raise IndexError(f'video ({path}) has {total_frames} frames, but need to sample {len(frame_indices)} frames ({frame_indices})')
         frame_indices = frame_indices[:end_frame_idx]
