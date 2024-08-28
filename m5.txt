@@ -1,1 +1,1 @@
-,./video_metadata.json
+/workspace/Open-Sora-Plan/mydata/m5.txt
