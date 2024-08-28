@@ -1,3 +1,9 @@
+*.log
+osps
+google-mt5-xxl
+eval/
+eval*/
+
 ucf101_stride4x4x4
 __pycache__
 *.mp4
