@@ -1,0 +1,1 @@
+/workspace/Open-Sora-Plan/myscripts/sample_inpaint_sp.sh

@@ -1,0 +1,21 @@
+
+torchrun --nnodes=1 --nproc_per_node 8  --master_port 29503 \
+    -m opensora.sample.sample_inpaint_sp \
+    --save_img_path "./eval/I2V/" \
+    --model_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p/" \
+    --conditional_images_path mydata/i2v_test/cimg.txt \
+    --text_prompt mydata/i2v_test/i2v_prompts.txt \
+    --num_frames 93 \
+    --height 480 \
+    --width 640 \
+    --cache_dir "./cache_dir" \
+    --text_encoder_name "/workspace/host_folder/Open-Sora-Plan/google-mt5-xxl" \
+    --ae CausalVAEModel_D4_4x8x8 \
+    --ae_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/vae" \
+    --fps 24 \
+    --guidance_scale 7.5 \
+    --num_sampling_steps 100 \
+    --enable_tiling \
+    --tile_overlap_factor 0.125 \
+    --max_sequence_length 512 \
+    --sample_method PNDM \
