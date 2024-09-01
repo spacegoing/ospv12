@@ -1,4 +1,4 @@
-# export WANDB_MODE="offline"
+export WANDB_MODE="offline"
 export ENTITY="linbin"
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
@@ -21,10 +21,11 @@ export HF_HOME="/workspace/public/users/lichang93/.cache/huggingface"
 
 accelerate launch \
     --config_file mytest/dspd_test.yaml \
-    mytest/dataloader_test.py \
-    --sp_size 1 \
-    --train_sp_batch_size 1 \
-    --output_dir="/workspace/Open-Sora-Plan/runs/480p_warm100_1e4/" \
+    opensora/train/train_t2v_diffusers.py \
+    --sp_size 8 \
+    --train_sp_batch_size 2 \
+    --drop_short_ratio 0 \
+    --output_dir="/workspace/Open-Sora-Plan/runs/test/" \
     --data "m5.txt" \
     --dataset t2v \
     --cache_dir "./cache_dir" \
@@ -40,7 +41,7 @@ accelerate launch \
     --attention_mode xformers \
     --gradient_checkpointing \
     --train_batch_size=1 \
-    --dataloader_num_workers 10 \
+    --dataloader_num_workers 0 \
     --gradient_accumulation_steps=1 \
     --max_train_steps=1000000 \
     --learning_rate=1e-4 \
@@ -67,4 +68,4 @@ accelerate launch \
     --ae CausalVAEModel_D4_4x8x8 \
     --ae_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/vae"
     # --resume_from_checkpoint="latest" \
-    # opensora/train/train_t2v_diffusers.py \
+    # mytest/dataloader_test.py \
