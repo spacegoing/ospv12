@@ -12,6 +12,8 @@ from typing import List
 from collections import Counter
 import random
 
+import torch.distributed as dist
+
 
 IMG_EXTENSIONS = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG']
 

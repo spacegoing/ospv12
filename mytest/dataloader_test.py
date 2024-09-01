@@ -208,7 +208,7 @@ def main(args):
         # prefetch_factor=4
     )
 
-
+    train_dataloader = accelerator.prepare(train_dataloader)
     for step, data_item in enumerate(train_dataloader):
         # if train_one_step(step, data_item, prof_):
         #     break
