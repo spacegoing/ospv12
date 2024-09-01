@@ -21,7 +21,7 @@ export HF_HOME="/workspace/public/users/lichang93/.cache/huggingface"
 
 accelerate launch \
     --config_file mytest/dspd_test.yaml \
-    opensora/train/train_t2v_diffusers.py \
+    mytest/dataloader_test.py \
     --sp_size 8 \
     --train_sp_batch_size 2 \
     --drop_short_ratio 0 \
@@ -68,4 +68,3 @@ accelerate launch \
     --ae CausalVAEModel_D4_4x8x8 \
     --ae_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/vae"
     # --resume_from_checkpoint="latest" \
-    # mytest/dataloader_test.py \
