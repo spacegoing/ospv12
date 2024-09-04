@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Main variables
-model_name="bricks_long_bsz16"
+model_name="bricks_long_bsz16_useshort"
 CHECKPOINT_DIR="/workspace/public/users/lichang93/mydocker/cogvx/host_folder/Open-Sora-Plan/runs/$model_name"
 declare -a specific_ckpts=()  # List of specific checkpoint numbers to evaluate
 declare -a processed_ckpts=() # List to keep track of processed checkpoints
+start_idx=43750
 
 # Function to run evaluation using torchrun
 run_evaluation() {
@@ -39,7 +40,7 @@ run_evaluation() {
 function check_and_run {
     local ckpt_num=$1
     local ckpt_folder="$CHECKPOINT_DIR/checkpoint-$ckpt_num"
-    if [ -d "$ckpt_folder" ] && [[ ! " ${processed_ckpts[@]} " =~ " $ckpt_num " ]]; then
+    if [[ $ckpt_num -ge $start_idx ]] && [ -d "$ckpt_folder" ] && [[ ! " ${processed_ckpts[@]} " =~ " $ckpt_num " ]]; then
         run_evaluation "$model_name" "$ckpt_num" "$ckpt_folder/model"
         processed_ckpts+=("$ckpt_num")  # Mark this checkpoint as processed
     else
