@@ -158,6 +158,7 @@ def calculate_common_metric(args, dataloader, device):
         else:
             tmp_list  = list(calculate_lpips(real_videos, generated_videos, args.device)['value'].values())
         score_list += tmp_list
+        print(np.mean(score_list))
     return np.mean(score_list)
         
 def main():

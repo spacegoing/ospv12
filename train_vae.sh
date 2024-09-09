@@ -1,0 +1,1 @@
+/workspace/Open-Sora-Plan/myscripts/cvae/my_cvae_train.sh

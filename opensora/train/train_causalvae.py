@@ -13,16 +13,18 @@ import random
 import numpy as np
 from pathlib import Path
 from einops import rearrange
-from causalvideovae.model import CausalVAEModel, EMA
-from causalvideovae.utils.utils import RealVideoDataset
-from causalvideovae.model.dataset_videobase import VideoDataset
-from causalvideovae.model.utils.module_utils import resolve_str_to_obj
-from causalvideovae.model.utils.video_utils import tensor_to_video
+from opensora.models.causalvideovae.model import CausalVAEModel, EMA
+from opensora.models.causalvideovae.utils.utils import RealVideoDataset
+from opensora.models.causalvideovae.model.dataset_videobase import VideoDataset
+from opensora.models.causalvideovae.model.utils.module_utils import resolve_str_to_obj
+from opensora.models.causalvideovae.model.utils.video_utils import tensor_to_video
 import time
 try:
     import lpips
 except:
     raise Exception("Need lpips to valid.")
+
+import torch.distributed as dist
 
 def set_random_seed(seed):
     random.seed(seed)
@@ -404,6 +406,7 @@ def train(args):
                 step_gen or step_dis
             ), "You should backward either Gen or Dis in a step."
 
+            # dist.breakpoint(6)
             with torch.cuda.amp.autocast(dtype=precision):
                 outputs, posterior = model(inputs)
 

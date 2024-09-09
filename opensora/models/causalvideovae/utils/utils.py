@@ -39,6 +39,8 @@ if is_bs4_available():
 if is_ftfy_available():
     import ftfy
 
+import torch.distributed as dist
+
 _tensor_or_tensors = Union[torch.Tensor, Iterable[torch.Tensor]]
 
 def find_model(model_name):
@@ -613,6 +615,9 @@ class RealVideoDataset(Dataset):
         video_data = decord_vr.get_batch(frame_id_list).asnumpy()
         video_data = torch.from_numpy(video_data)
         video_data = video_data.permute(3, 0, 1, 2)
+
+        # dist.breakpoint(0)
+
         return _preprocess(
             video_data, short_size=self.short_size, crop_size=self.crop_size
         )
