@@ -18,13 +18,14 @@ export HF_HOME="/workspace/public/users/lichang93/.cache/huggingface"
 # export OMP_NUM_THREADS=1
 # export MKL_NUM_THREADS=1
 # export NCCL_ALGO=Tree
+export NCCL_DEBUG_FILE=test_nccl_logs.txt
 
 accelerate launch \
     --config_file mytest/dspd_test.yaml \
     opensora/train/train_t2v_diffusers.py \
     --sp_size 8 \
     --train_sp_batch_size 2 \
-    --drop_short_ratio 0 \
+    --drop_short_ratio 1 \
     --output_dir="/workspace/Open-Sora-Plan/runs/test/" \
     --data "m5.txt" \
     --dataset t2v \
