@@ -156,6 +156,26 @@ class ProgressInfo:
         self.train_loss = train_loss
 
 
+def setup_logging(config=None):
+    rank = dist.get_rank()
+    num_processes_per_node = 8  # This should be set according to your actual setup
+    node_number = rank // num_processes_per_node
+
+    log_format = f"[%(asctime)s] [Node {node_number} Rank {rank}] [%(levelname)s] [%(filename)s:%(lineno)d:%(funcName)s] - %(message)s"
+    date_format = "%m/%d/%Y %H:%M:%S"
+
+    # Configure file and console handlers
+    file_handler = logging.FileHandler(f"log_64gpu/process_{rank}_log.txt", mode='a')
+    console_handler = logging.StreamHandler()
+
+    for handler in (file_handler, console_handler):
+        handler.setLevel(logging.INFO)
+        handler.setFormatter(logging.Formatter(log_format, datefmt=date_format))
+
+    # Set up basic logging configuration
+    logging.basicConfig(level=logging.INFO, handlers=[file_handler, console_handler])
+
+
 #################################################################################
 #                                  Training Loop                                #
 #################################################################################
@@ -185,12 +205,13 @@ def main(args):
         if not is_wandb_available():
             raise ImportError("Make sure to install wandb if you want to use it for logging during training.")
 
-    # Make one log on every process with the configuration for debugging.
-    logging.basicConfig(
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        datefmt="%m/%d/%Y %H:%M:%S",
-        level=logging.INFO,
-    )
+    setup_logging(args)
+    # # Make one log on every process with the configuration for debugging.
+    # logging.basicConfig(
+    #     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    #     datefmt="%m/%d/%Y %H:%M:%S",
+    #     level=logging.INFO,
+    # )
     logger.info(accelerator.state, main_process_only=False)
     if accelerator.is_local_main_process:
         transformers.utils.logging.set_verbosity_warning()
@@ -459,6 +480,8 @@ def main(args):
         args.max_train_steps = args.num_train_epochs * num_update_steps_per_epoch
         overrode_max_train_steps = True
 
+    if args.resume_from_checkpoint:
+        args.lr_warmup_steps = 0
     lr_scheduler = get_scheduler(
         args.lr_scheduler,
         optimizer=optimizer,

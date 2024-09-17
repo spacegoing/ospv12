@@ -44,6 +44,8 @@ def _single_all_to_all(
         ).transpose(0, 1).contiguous()
 
     output = torch.empty_like(input_t)
+    # dist.breakpoint(0)
+    # dist.breakpoint(6)
     dist.all_to_all_single(output, input_t, group=nccl_info.group)
     # if scattering the seq-dim, transpose the heads back to the original dimension
     if scatter_dim < 1:
@@ -112,6 +114,7 @@ def prepare_parallel_data(hidden_states, encoder_hidden_states, attention_mask, 
     frame = hidden_states.shape[2]
     assert frame % sp_size == 0, "frame should be a multiple of sp_size"
 
+    # dist.breakpoint(0)
     encoder_hidden_states = rearrange(encoder_hidden_states, 'b 1 (n x) h -> b n x h',
                                      n=sp_size, x=encoder_hidden_states.shape[2]//sp_size).contiguous()
     hidden_states, encoder_hidden_states, attention_mask, encoder_attention_mask = all_to_all(hidden_states,

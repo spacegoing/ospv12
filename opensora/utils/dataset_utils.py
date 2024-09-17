@@ -149,6 +149,7 @@ class Collate:
                 int(math.ceil(i[2] / ae_stride_thw[1])),
                 int(math.ceil(i[3] / ae_stride_thw[2]))
                 ] for i in batch_input_size]
+        # dist.breakpoint(0)
         attention_mask = [
             F.pad(torch.ones(i, dtype=pad_batch_tubes.dtype), (0, max_latent_size[2] - i[2], 
                                                                0, max_latent_size[1] - i[1],
