@@ -26,7 +26,7 @@ accelerate launch \
     --train_sp_batch_size 2 \
     --drop_short_ratio 0 \
     --output_dir="/workspace/Open-Sora-Plan/runs/test/" \
-    --data "m5.txt" \
+    --data "test.txt" \
     --dataset t2v \
     --cache_dir "./cache_dir" \
     --pretrained "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p/diffusion_pytorch_model.safetensors" \

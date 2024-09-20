@@ -18,6 +18,7 @@ export HF_HOME="/workspace/public/users/lichang93/.cache/huggingface"
 # export OMP_NUM_THREADS=1
 # export MKL_NUM_THREADS=1
 # export NCCL_ALGO=Tree
+export NCCL_DEBUG_FILE=gpu64_nccl_logs.txt
 
 accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_PORT \
     --num_machines $WORLD_SIZE --machine_rank $RANK \
@@ -25,11 +26,10 @@ accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_POR
     opensora/train/train_t2v_diffusers.py \
     --sp_size 8 \
     --train_sp_batch_size 2 \
-    --output_dir="/workspace/Open-Sora-Plan/runs/bricks_long_bsz16/" \
+    --output_dir="/workspace/Open-Sora-Plan/runs/aes_45/" \
     --data "m5.txt" \
     --dataset t2v \
     --cache_dir "./cache_dir" \
-    --pretrained "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p/diffusion_pytorch_model.safetensors" \
     --model OpenSoraT2V-ROPE-L/122 \
     --sample_rate 1 \
     --num_frames 93 \
@@ -66,5 +66,7 @@ accelerate launch --main_process_ip $MASTER_ADDR --main_process_port $MASTER_POR
     --group_frame \
     --text_encoder_name "/workspace/public/users/lichang93/mydocker/cogvx/host_folder/Open-Sora-Plan/google-mt5-xxl" \
     --ae CausalVAEModel_D4_4x8x8 \
+    --resume_from_checkpoint="latest" \
     --ae_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/vae"
-    # --resume_from_checkpoint="latest" \
+# --resume_from_checkpoint="/workspace/Open-Sora-Plan/runs/aes_45/checkpoint-5250" \
+    # --pretrained "/workspace/public/models/Open-Sora-Plan-v1.2.0/93x480p/diffusion_pytorch_model.safetensors" \

@@ -65,6 +65,8 @@ from opensora.utils.dataset_utils import Collate, LengthGroupedSampler
 from opensora.sample.pipeline_opensora import OpenSoraPipeline
 
 import torch.distributed as dist
+import tracemalloc
+from torch.utils.data import get_worker_info
 
 # Will error if the minimal version of diffusers is not installed. Remove at your own risks.
 check_min_version("0.24.0")
@@ -452,6 +454,7 @@ def main(args):
     logger.info(f"optimizer: {optimizer}")
     
     # Setup data:
+    logger.info("***** Loading Data *****")
     train_dataset = getdataset(args)
     sampler = LengthGroupedSampler(
                 args.train_batch_size,

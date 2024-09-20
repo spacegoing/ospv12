@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Main variables
-model_name="bricks_long_bsz16_useshort"
+model_name="aes_45"
 CHECKPOINT_DIR="/workspace/public/users/lichang93/mydocker/cogvx/host_folder/Open-Sora-Plan/runs/$model_name"
 declare -a specific_ckpts=()  # List of specific checkpoint numbers to evaluate
 declare -a processed_ckpts=() # List to keep track of processed checkpoints
-start_idx=43750
+start_idx=100
 
 # Function to run evaluation using torchrun
 run_evaluation() {
@@ -19,7 +19,7 @@ run_evaluation() {
              -m opensora.sample.sample_t2v_sp \
              --save_img_path "$save_img_path" \
              --model_path "$model_path" \
-             --text_prompt 'myprompts/bricks.txt' \
+             --text_prompt 'myprompts/midhard.txt' \
              --num_frames 93 \
              --height 480 \
              --width 640 \
@@ -50,7 +50,8 @@ function check_and_run {
 
 # Main loop to continuously monitor for new checkpoints
 while true; do
-    for ckpt_folder in $CHECKPOINT_DIR/checkpoint-*; do
+    # for ckpt_folder in $CHECKPOINT_DIR/checkpoint-*; do
+    for ckpt_folder in $(ls -d $CHECKPOINT_DIR/checkpoint-* 2>/dev/null | sort -V); do
         ckpt_num=$(basename $ckpt_folder | sed 's/checkpoint-//')
         check_and_run "$ckpt_num"
     done

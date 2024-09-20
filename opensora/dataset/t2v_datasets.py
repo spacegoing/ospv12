@@ -28,6 +28,9 @@ from accelerate.logging import get_logger
 from opensora.utils.dataset_utils import DecordInit
 from opensora.utils.utils import text_preprocessing
 logger = get_logger(__name__)
+import torch.distributed as dist
+import tracemalloc
+from torch.utils.data import get_worker_info
 
 def filter_json_by_existed_files(directory, data, postfixes=[".mp4", ".jpg"]):
     # 构建搜索模式，以匹配指定后缀的文件
