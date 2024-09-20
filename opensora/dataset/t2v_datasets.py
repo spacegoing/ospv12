@@ -28,6 +28,7 @@ from accelerate.logging import get_logger
 from opensora.utils.dataset_utils import DecordInit
 from opensora.utils.utils import text_preprocessing
 logger = get_logger(__name__)
+import video_reader as vrs
 import torch.distributed as dist
 import tracemalloc
 from torch.utils.data import get_worker_info
@@ -139,7 +140,6 @@ class T2V_dataset(Dataset):
         self.max_width = args.max_width
         self.drop_short_ratio = args.drop_short_ratio
         assert self.speed_factor >= 1
-        self.v_decoder = DecordInit()
 
         self.support_Chinese = True
         if not ('mt5' in args.text_encoder_name):
@@ -356,9 +356,9 @@ class T2V_dataset(Dataset):
         return new_cap_list, sample_num_frames
     
     def decord_read(self, path, predefine_num_frames):
-        decord_vr = self.v_decoder(path)
-        total_frames = len(decord_vr)
-        fps = decord_vr.get_avg_fps() if decord_vr.get_avg_fps() > 0 else 30.0
+        info = vrs.get_info(path)
+        fps = float(info["fps"])
+        total_frames = int(info["frame_count"])
         # import ipdb;ipdb.set_trace()
         # resample in case high fps, such as 50/60/90/144 -> train_fps(e.g, 24)
         frame_interval = 1.0 if abs(fps - self.train_fps) < 0.1 else fps / self.train_fps
@@ -390,7 +390,7 @@ class T2V_dataset(Dataset):
             raise ValueError(f'predefine_num_frames ({predefine_num_frames}) is not equal with frame_indices ({len(frame_indices)})')
         if len(frame_indices) < self.num_frames and self.drop_short_ratio >= 1:
             raise IndexError(f'video ({path}) has {total_frames} frames, but need to sample {len(frame_indices)} frames ({frame_indices})')
-        video_data = decord_vr.get_batch(frame_indices).asnumpy()
+        video_data = vrs.get_batch(path, frame_indices)
         video_data = torch.from_numpy(video_data)
         video_data = video_data.permute(0, 3, 1, 2)  # (T, H, W, C) -> (T C H W)
         return video_data
