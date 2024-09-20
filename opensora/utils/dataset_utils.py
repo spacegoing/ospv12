@@ -33,7 +33,8 @@ class DecordInit(object):
             results (dict): The resulting dict to be modified and passed
                 to the next transform in pipeline.
         """
-        reader = decord.VideoReader(filename,
+        with open(filename, 'rb') as f:
+            reader = decord.VideoReader(f,
                                     ctx=self.ctx,
                                     num_threads=self.num_threads)
         return reader
