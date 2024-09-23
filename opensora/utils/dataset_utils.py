@@ -13,6 +13,9 @@ from collections import Counter
 import random
 
 import torch.distributed as dist
+import tracemalloc
+from torch.utils.data import get_worker_info
+import os
 
 
 IMG_EXTENSIONS = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG']
@@ -74,9 +77,12 @@ class Collate:
         self.max_thw = (self.num_frames, self.max_height, self.max_width)
 
     def package(self, batch):
-        batch_tubes = [i['pixel_values'] for i in batch]  # b [c t h w]
-        input_ids = [i['input_ids'] for i in batch]  # b [1 l]
-        cond_mask = [i['cond_mask'] for i in batch]  # b [1 l]
+        # batch_tubes = [i['pixel_values'] for i in batch]  # b [c t h w]
+        # input_ids = [i['input_ids'] for i in batch]  # b [1 l]
+        # cond_mask = [i['cond_mask'] for i in batch]  # b [1 l]
+        batch_tubes = torch.stack([i['pixel_values'] for i in batch])  # b [c t h w]
+        input_ids = torch.stack([i['input_ids'] for i in batch])  # b [1 l]
+        cond_mask = torch.stack([i['cond_mask'] for i in batch])  # b [1 l]
         return batch_tubes, input_ids, cond_mask
 
     def __call__(self, batch):
@@ -159,8 +165,10 @@ class Collate:
         if self.batch_size == 1 or self.group_frame or self.group_resolution:
             assert torch.all(attention_mask.bool())
             
-        input_ids = torch.stack(input_ids)  # b 1 l
-        cond_mask = torch.stack(cond_mask)  # b 1 l
+        if isinstance(input_ids, list):
+            input_ids = torch.stack(input_ids)  # b 1 l
+        if isinstance(cond_mask, list):
+            cond_mask = torch.stack(cond_mask)  # b 1 l
 
         return pad_batch_tubes, attention_mask, input_ids, cond_mask
 
