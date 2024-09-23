@@ -182,6 +182,7 @@ def main(args):
         args_dict = json.load(f)
 
     # Convert the dictionary back to an argparse.Namespace object
+    args_dict.update(vars(args))
     args = argparse.Namespace(**args_dict)
 
     train_dataset = getdataset(args)
