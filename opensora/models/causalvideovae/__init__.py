@@ -30,3 +30,4 @@ ae_norm = {
     'CausalVAEModel_D4_4x8x8': Lambda(lambda x: 2. * x - 1.),
     'CausalVAEModel_D8_4x8x8': Lambda(lambda x: 2. * x - 1.),
 }
+# CausalVAEModel_D4_4x8x8
