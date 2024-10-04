@@ -2,6 +2,8 @@ from .modeling_causalvae import CausalVAEModel
 
 from einops import rearrange
 from torch import nn
+import torch.distributed as dist
+import torch
 
 class CausalVAEModelWrapper(nn.Module):
     def __init__(self, model_path, subfolder=None, cache_dir=None, use_ema=False, **kwargs):

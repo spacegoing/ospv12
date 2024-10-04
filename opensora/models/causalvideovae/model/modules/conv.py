@@ -14,6 +14,8 @@ except:
     torch_npu = None
     npu_config = None
 
+import torch.distributed as dist
+
 class Conv2d(nn.Conv2d):
     def __init__(
         self,

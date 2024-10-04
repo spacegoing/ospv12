@@ -29,6 +29,8 @@ from torchvision.io import read_video
 from torchvision.transforms import Lambda, Compose
 from torchvision.transforms._transforms_video import CenterCropVideo
 
+import torch.distributed as dist
+
 class Encoder(nn.Module):
     def __init__(
         self,
@@ -154,6 +156,7 @@ class Encoder(nn.Module):
             h = npu_config.run_group_norm(self.norm_out, h)
         h = nonlinearity(h)
         h = self.conv_out(h)
+        # dist.breakpoint(0)
         return h
 
 
@@ -250,6 +253,7 @@ class Decoder(nn.Module):
         )
 
     def forward(self, z):
+        # dist.breakpoint(0)
         h = self.conv_in(z)
         h = self.mid.block_1(h)
         h = self.mid.attn_1(h)
@@ -274,6 +278,7 @@ class Decoder(nn.Module):
         else:
             h_dtype = h.dtype
             h = npu_config.run_conv3d(self.conv_out, h, h_dtype)
+        # dist.breakpoint(0)
         return h
 
 
