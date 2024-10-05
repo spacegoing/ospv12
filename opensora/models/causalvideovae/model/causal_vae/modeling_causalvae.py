@@ -485,12 +485,15 @@ class CausalVAEModel(VideoBaseAE):
             else:
                 moment = self.tiled_encode2d(chunk_x, return_moments=True)
             moments.append(moment)
+        # dist.breakpoint(0)
         moments = torch.cat(moments, dim=2)
         posterior = DiagonalGaussianDistribution(moments)
         return posterior
-    
+
     def tiled_decode(self, x):
         t = x.shape[2]
+        # since t_chunk_idx[i+1]+1 when calc t_chunk_start_end
+        # each chunk will always = self.tile_latent_min_size_t
         t_chunk_idx = [i for i in range(0, t, self.tile_latent_min_size_t-1)]
         if len(t_chunk_idx) == 1 and t_chunk_idx[0] == 0:
             t_chunk_start_end = [[0, t]]
@@ -505,6 +508,7 @@ class CausalVAEModel(VideoBaseAE):
         for idx, (start, end) in enumerate(t_chunk_start_end):
             chunk_x = x[:, :, start: end]
             if idx != 0:
+                # since t_chunk_idx[i+1]+1 when calc t_chunk_start_end
                 dec = self.tiled_decode2d(chunk_x)[:, :, 1:]
             else:
                 dec = self.tiled_decode2d(chunk_x)

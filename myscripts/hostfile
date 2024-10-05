@@ -1,8 +1,8 @@
-ospsft8-resume-copy3-master-0 slots=8
-ospsft8-resume-copy3-worker-0 slots=8
-ospsft8-resume-copy3-worker-1 slots=8
-ospsft8-resume-copy3-worker-2 slots=8
-ospsft8-resume-copy3-worker-3 slots=8
-ospsft8-resume-copy3-worker-4 slots=8
-ospsft8-resume-copy3-worker-5 slots=8
-ospsft8-resume-copy3-worker-6 slots=8
+ospsft8-resume-copy4-master-0 slots=8
+ospsft8-resume-copy4-worker-0 slots=8
+ospsft8-resume-copy4-worker-1 slots=8
+ospsft8-resume-copy4-worker-2 slots=8
+ospsft8-resume-copy4-worker-3 slots=8
+ospsft8-resume-copy4-worker-4 slots=8
+ospsft8-resume-copy4-worker-5 slots=8
+ospsft8-resume-copy4-worker-6 slots=8
