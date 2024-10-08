@@ -340,3 +340,28 @@
 # torch.Size([1, 8, 8, 60, 80])
 # (Pdb)  moments[2].shape
 # torch.Size([1, 8, 7, 60, 80])
+
+
+# %%
+def find_closest_y(x, vae_stride_t=4, model_ds_t=4):
+  """
+  Find the closest value of `y` starting from `x` that satisfies two conditions:
+
+  1. (y - 1) is divisible by `vae_stride_t`.
+  2. ((y - 1) // vae_stride_t + 1) is divisible by `model_ds_t`.
+
+  The function works backwards from `x` to find the first `y` that meets both conditions.
+  If no such `y` is found that is greater than or equal to 29, return -1.
+  """
+  if x < 29:
+    return -1
+
+  # Step 1: Adjust x to account for the conditions where (y - 1) % vae_stride_t == 0
+  y = x - (x - 1) % vae_stride_t
+
+  # Step 2: Find the next closest y that satisfies ((y - 1) // vae_stride_t + 1) % model_ds_t == 0
+  remainder = ((y - 1) // vae_stride_t + 1) % model_ds_t
+  if remainder != 0:
+    y -= remainder * vae_stride_t
+
+  return y
