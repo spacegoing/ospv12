@@ -283,6 +283,7 @@
 
 # %% CausalConv3d
 # fixed: K=3, S=2
+# calc_Tdownsample_from_encoder
 # T' = floor[ (T + K-1 - D*(K-1) -1)/S + 1 ] # For T=33, T'=17
 # K-1 because only pad front, not back along T dim.
 
@@ -302,9 +303,27 @@
 
 # %% Tiled VAE Shape
 
-# why [1:] ?, when is padded?
-# def tiled_encode(self, x):
-#             moment = self.tiled_encode2d(chunk_x, return_moments=True)[:, :, 1:]
+# !! Ultimate Shape !!
+# num_chunks = T//(33-1)
+# residue = T%(33-1)
+# fixed_downT_len = calc_Tdownsample_from_encoder(33) = 9
+# tmp_len = fixed_downT_len + (fixed_downT_len-1)*(num_chunks-1)
+# ult_len = tmp_len + calc_Tdownsample_from_encoder(residue)
+
+# 33 is from CausalVAEModel (345): self.tile_sample_min_size_t = 33
+# calc_Tdownsample_from_encoder is T' = floor[ (T + K-1 - D*(K-1) -1)/S + 1 ] # For T=33, T'=17
+
+# logics of num_chunks, residue: CausalVAEModel.tiled_encode()
+# t_chunk_idx = [i for i in range(0, t, self.tile_sample_min_size_t-1)]
+# t_chunk_start_end = [[t_chunk_idx[i], t_chunk_idx[i+1]+1] for i in range(len(t_chunk_idx)-1)]
+
+# logics of tmp_len, ult_len:
+#        for idx, (start, end) in enumerate(t_chunk_start_end):
+#            chunk_x = x[:, :, start: end]
+#            if idx != 0:
+#                moment = self.tiled_encode2d(chunk_x, return_moments=True)[:, :, 1:]
+#            else:
+#                moment = self.tiled_encode2d(chunk_x, return_moments=True)
 
 # tiled_encode2d(self, x, return_moments=False)
 # moments = torch.cat(result_rows, dim=3)
