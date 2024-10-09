@@ -2,17 +2,18 @@
 
 # Main variables
 model_name="aes_45"
-CHECKPOINT_DIR="/workspace/public/users/lichang93/mydocker/cogvx/host_folder/Open-Sora-Plan/runs/$model_name"
+FOLDER="/workspace/public/users/lichang93/mydocker/cogvx/host_folder/Open-Sora-Plan"
+CHECKPOINT_DIR="$FOLDER/runs/$model_name"
 declare -a specific_ckpts=()  # List of specific checkpoint numbers to evaluate
 declare -a processed_ckpts=() # List to keep track of processed checkpoints
-start_idx=100
+start_idx=98500
 
 # Function to run evaluation using torchrun
 run_evaluation() {
     local model_name=$1
     local ckpt_num=$2
     local model_path=$3
-    local save_img_path="./eval/${model_name}/${model_name}_ckpt_${ckpt_num}"
+    local save_img_path="${FOLDER}/eval/${model_name}/${model_name}_ckpt_${ckpt_num}"
 
     # Execute the torchrun command with provided arguments
     torchrun --nnodes=1 --nproc_per_node 8  --master_port 29503 \
@@ -24,7 +25,7 @@ run_evaluation() {
              --height 480 \
              --width 640 \
              --cache_dir "./cache_dir" \
-             --text_encoder_name "/workspace/host_folder/Open-Sora-Plan/google-mt5-xxl" \
+             --text_encoder_name "${FOLDER}/google-mt5-xxl" \
              --ae CausalVAEModel_D4_4x8x8 \
              --ae_path "/workspace/public/models/Open-Sora-Plan-v1.2.0/vae" \
              --fps 24 \
